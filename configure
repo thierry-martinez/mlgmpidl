@@ -370,7 +370,7 @@ if test $enable_prof -eq 1
 then
     echo -n "checking whether to enable profiling: "
     case "${overs}" in
-	4.08.[1-9]*|4.09.*|4.[1-9]*)
+	4.08.[1-9]*|4.09.*|4.[1-9]*|[5-9].*)
 	    echo "only available up to OCaml 4.08.0 (<= ${overs})";
 	    enable_prof=0;;
 	*)
@@ -391,6 +391,19 @@ then
     esac
 fi
 
+# Bigarray
+
+echo -n "checking whether to link bigarray: "
+case "${overs}" in
+    [1-4].*)
+        echo "linking to bigarray library is required up to OCaml 4.14"
+        bigarray=bigarray
+        ;;
+    *)
+        echo "bigarray library is included with stdlib since OCaml 5.0"
+        bigarray=
+        ;;
+esac
 
 # Extension for dynamic libraries
 ext_dll="";
@@ -499,6 +512,8 @@ OCAMLMKTOP = $ocamlmktop
 OCAMLMKLIB = $ocamlmklib
 CAMLIDL = $camlidl
 OCAMLFIND = $ocamlfind
+
+BIGARRAY = $bigarray
 
 # TODO: to be configured
 LATEX = latex
